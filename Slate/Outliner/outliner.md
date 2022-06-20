@@ -119,3 +119,23 @@ flowchart TD
 	K --> L["SWidget::OnMouseButtonUp结束"]
 ```
 
+# LevelEditor
+
+```mermaid
+flowchart TD
+	开始 --> A[FLevelEditorModule::StartupModule]
+	A --> B["FGlobalTabManager::Get()->RegisterTabSpawner(..FOnSpawnTab::CreateRaw(this, &FLevelEditorModule::SpawnLevelEditor))"]
+	B --> C["LevelEditorTab = SNew(SDockTab)"]
+	C --> D["LevelEditorTab->SetContent(SAssignNew(LevelEditorTmp, SLevelEditor))"]
+	D --> E["LevelEditorTmp->Initialize(LevelEditorTab, OwnerWindow.ToSharedRef())"]
+	E --> F["RestoreContentArea"]
+	F --> G["LevelEditorModule.SetLevelEditorTabManager(OwnerTab)"]
+	G --> H["LevelEditorTabManager->RegisterTabSpawner(LevelEditorSceneOutliner, ... , &SLevelEditor::SpawnLevelEditorTab)"]
+	H --> I["SLevelEditor:SpawnLevelEditorTab"]
+	I --> J["if (TabIdentifier == LevelEditorTabIds::LevelEditorSceneOutliner)"]
+	J --> K["SceneOutlinerModule.CreateSceneOutliner"]
+	K --> L["SNew(SSceneOutliner)"]
+	L --> 结束
+```
+
+LevelEditor模块在启动时，就会向TabManager注册很多面板，如Viewport，Details，Layers，Levels，World Outliner等

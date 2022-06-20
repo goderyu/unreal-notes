@@ -3,6 +3,10 @@
         {
             "name": "unreal-notes",
             "path": "."
+        },
+        {
+            "name": "books",
+            "path": "../books"
         }
     ]
 }
